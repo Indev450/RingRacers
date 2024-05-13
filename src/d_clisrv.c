@@ -4924,17 +4924,10 @@ static void HandlePacketFromPlayer(SINT8 node)
 				|| netbuffer->packettype == PT_NODEKEEPALIVEMIS)
 				break;
 
-			// If we already received a ticcmd for this tic, just submit it for the next one.
-			tic_t faketic = maketic;
-
-			if ((!!(netcmds[maketic % BACKUPTICS][netconsole].flags & TICCMD_RECEIVED))
-				&& (maketic - firstticstosend < BACKUPTICS - 1))
-				faketic++;
-
 			FuzzTiccmd(&netbuffer->u.clientpak.cmd);
 
 			// Copy ticcmd
-			G_MoveTiccmd(&netcmds[faketic%BACKUPTICS][netconsole], &netbuffer->u.clientpak.cmd, 1);
+			G_MoveTiccmd(&netcmds[maketic%BACKUPTICS][netconsole], &netbuffer->u.clientpak.cmd, 1);
 
 			// Check ticcmd for "speed hacks"
 			if (CheckForSpeedHacks((UINT8)netconsole))
@@ -4947,7 +4940,7 @@ static void HandlePacketFromPlayer(SINT8 node)
 				&& (nodetoplayer2[node] >= 0))
 			{
 				FuzzTiccmd(&netbuffer->u.client2pak.cmd2);
-				G_MoveTiccmd(&netcmds[faketic%BACKUPTICS][(UINT8)nodetoplayer2[node]],
+				G_MoveTiccmd(&netcmds[maketic%BACKUPTICS][(UINT8)nodetoplayer2[node]],
 					&netbuffer->u.client2pak.cmd2, 1);
 
 				if (CheckForSpeedHacks((UINT8)nodetoplayer2[node]))
@@ -4959,7 +4952,7 @@ static void HandlePacketFromPlayer(SINT8 node)
 				&& (nodetoplayer3[node] >= 0))
 			{
 				FuzzTiccmd(&netbuffer->u.client3pak.cmd3);
-				G_MoveTiccmd(&netcmds[faketic%BACKUPTICS][(UINT8)nodetoplayer3[node]],
+				G_MoveTiccmd(&netcmds[maketic%BACKUPTICS][(UINT8)nodetoplayer3[node]],
 					&netbuffer->u.client3pak.cmd3, 1);
 
 				if (CheckForSpeedHacks((UINT8)nodetoplayer3[node]))
@@ -4970,7 +4963,7 @@ static void HandlePacketFromPlayer(SINT8 node)
 				&& (nodetoplayer4[node] >= 0))
 			{
 				FuzzTiccmd(&netbuffer->u.client4pak.cmd4);
-				G_MoveTiccmd(&netcmds[faketic%BACKUPTICS][(UINT8)nodetoplayer4[node]],
+				G_MoveTiccmd(&netcmds[maketic%BACKUPTICS][(UINT8)nodetoplayer4[node]],
 					&netbuffer->u.client4pak.cmd4, 1);
 
 				if (CheckForSpeedHacks((UINT8)nodetoplayer4[node]))
