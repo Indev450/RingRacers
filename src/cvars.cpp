@@ -320,6 +320,7 @@ consvar_t cv_closedcaptioning = Player("closedcaptioning", "Off").on_off().oncha
 consvar_t cv_continuousmusic = Player("continuousmusic", "On").on_off();
 consvar_t cv_streamersafemusic = Player("streamersafemusic", "Off").on_off();
 consvar_t cv_controlperkey = Player("controlperkey", "One").values({{1, "One"}, {2, "Several"}});
+consvar_t cv_specialmusic = Player("specialmusic", "On").on_off();
 
 // actual general (maximum) sound & music volume, saved into the config
 // Volume scale is 0-100 in new mixer. 100 is treated as -0dB or 100% gain. No more weirdness to work around SDL_mixer
@@ -358,6 +359,9 @@ consvar_t cv_drawdist_precip = Player("drawdist_precip", "Normal").values({
 });
 
 consvar_t cv_drawinput = Player("drawinput", "Off").on_off();
+
+consvar_t cv_holdscorebutt = Player("holdscoreboardbutton", "Off").on_off();
+
 consvar_t cv_ffloorclip = Player("ffloorclip", "On").on_off();
 
 consvar_t cv_fpscap = Player("fpscap", "Match refresh rate").values({
