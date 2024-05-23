@@ -2223,7 +2223,7 @@ static INT16 P_FindClosestTurningForAngle(player_t *player, INT32 targetAngle, I
 
 	// Slightly frumpy binary search for the ideal turning input.
 	// We do this instead of reversing K_GetKartTurnValue so that future handling changes are automatically accounted for.
-	
+
 	while (attempts++ < 20) // Practical calls of this function search maximum 10 times, this is solely for safety.
 	{
 		// These need to be treated as signed, or situations where boundaries straddle 0 are a mess.
@@ -2344,7 +2344,7 @@ static void P_UpdatePlayerAngle(player_t *player)
 		// Corrections via fake turn go through easing.
 		// That means undoing them takes the same amount of time as doing them.
 		// This can lead to oscillating death spiral states on a multi-tic correction, as we swing past the target angle.
-		// So before we go into death-spirals, if our predicton is _almost_ right... 
+		// So before we go into death-spirals, if our predicton is _almost_ right...
 		angle_t leniency_base;
 		if (G_CompatLevel(0x000A))
 		{
@@ -2355,6 +2355,14 @@ static void P_UpdatePlayerAngle(player_t *player)
 		{
 			leniency_base = 8 * ANG1 / 3;
 		}
+
+		// Gross. Take a look at sliptide starts properly for 2.4.
+		// Yell at Tyron!
+		if (!G_CompatLevel(0x000C))
+		{
+			leniency_base = 6 * ANG1 / 3;
+		}
+
 		angle_t leniency = leniency_base * min(player->cmd.latency, 6);
 		// Don't force another turning tic, just give them the desired angle!
 
@@ -2453,7 +2461,7 @@ void P_MovePlayer(player_t *player)
 	//////////////////////
 
 	P_UpdatePlayerAngle(player);
-	
+
 	ticruned++;
 	if (!(cmd->flags & TICCMD_RECEIVED))
 		ticmiss++;
@@ -4258,7 +4266,7 @@ void P_PlayerThink(player_t *player)
 	}
 	else if (cmd->buttons & BT_ACCELERATE)
 	{
-		if (!player->exiting && !(player->oldcmd.buttons & BT_ACCELERATE))
+		if (!player->exiting && !(player->oldcmd.buttons & BT_ACCELERATE) && ((cmd->buttons & BT_SPINDASHMASK) != BT_SPINDASHMASK) && player->trickpanel != TRICKSTATE_READY)
 		{
 			player->kickstartaccel = 0;
 		}
@@ -4553,7 +4561,7 @@ void P_PlayerThink(player_t *player)
 	{
 		player->stairjank--;
 	}
-	
+
 	// Random skin / "ironman"
 	{
 		UINT32 skinflags = (demo.playback)

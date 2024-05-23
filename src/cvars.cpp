@@ -301,7 +301,6 @@ consvar_t cv_addons_md5 = Player("addons_md5", "Name").values({{0, "Name"}, {1, 
 consvar_t cv_addons_search_case = Player("addons_search_case", "No").yes_no();
 consvar_t cv_addons_search_type = Player("addons_search_type", "Anywhere").values({{0, "Start"}, {1, "Anywhere"}});
 consvar_t cv_addons_showall = Player("addons_showall", "No").yes_no();
-consvar_t cv_allowguests = Player("allowguests", "On").on_off();
 consvar_t cv_alttitle = Player("alttitle", "Off").on_off();
 consvar_t cv_alwaysgrabmouse = GraphicsDriver("alwaysgrabmouse", "Off").on_off();
 
@@ -644,6 +643,9 @@ consvar_t cv_zvote_length = NetVar("zvote_length", "20").values(CV_Unsigned);
 consvar_t cv_zvote_quorum = NetVar("zvote_quorum", "0.6").floating_point().min_max(0, FRACUNIT);
 consvar_t cv_zvote_spectators = NetVar("zvote_spectator_votes", "Off").on_off();
 
+consvar_t cv_allowguests = NetVar("allowguests", "On").on_off();
+consvar_t cv_gamestochat = NetVar("gamestochat", "0").min_max(0, 99);
+
 
 //
 // Netvars that don't save...
@@ -798,9 +800,6 @@ consvar_t cv_votetime = UnsavedNetVar("votetime", "20").min_max(10, 3600);
 // Cheats don't save...
 //
 
-consvar_t cv_4thgear = OnlineCheat("4thgear", "Off").values(CV_OnOff).flags(CV_NOSHOWHELP).description("Surpassing your limits!");
-consvar_t cv_levelskull = OnlineCheat("levelskull", "Off").values(CV_OnOff).flags(CV_NOSHOWHELP).description("What Storm Rig looked like 2 months before 2.0");
-
 consvar_t cv_barriertime = OnlineCheat("barriertime", "30").values(CV_Natural).description("How long it takes for the Barrier to shrink in Battle Overtime");
 consvar_t cv_battlespawn = OnlineCheat("battlespawn", "0").values(CV_Unsigned).description("Spawn every player at the same spawnpoint in Battle (0 = random spawns)");
 consvar_t cv_battletest = OnlineCheat("battletest", "Off").on_off().description("Free Play goes to Battle instead of Prisons");
@@ -867,7 +866,7 @@ consvar_t cv_ufo_health = OnlineCheat("ufo_health", "-1").min_max(-1, 100).descr
 consvar_t cv_botscanvote = ServerCheat("botscanvote", "No").yes_no();
 
 void Gravity_OnChange(void);
-consvar_t cv_gravity = ServerCheat("gravity", "0.8").floating_point().onchange(Gravity_OnChange).description("Change the default gravity"); // change DEFAULT_GRAVITY if you change this
+consvar_t cv_gravity = ServerCheat("gravity", "0.8").floating_point().min_max(0, 200*FRACUNIT).onchange(Gravity_OnChange).description("Change the default gravity"); // change DEFAULT_GRAVITY if you change this
 
 consvar_t cv_kartdebugcolorize = ServerCheat("debugcolorize", "Off").on_off().description("Show all colorized options on the HUD");
 consvar_t cv_kartdebugdirector = ServerCheat("debugdirector", "Off").on_off().description("Show director AI on the HUD");
@@ -933,6 +932,8 @@ consvar_t cv_renderhitbox = PlayerCheat("renderhitbox", "Off").values(renderhitb
 consvar_t cv_bighead = Player("bighead", "Off").dont_save().values(CV_OnOff).flags(CV_NOSHOWHELP).description("Works out at the library");
 consvar_t cv_shittysigns = Player("shittysigns", "Off").dont_save().values(CV_OnOff).flags(CV_NOSHOWHELP).description("It's better because it's worse");
 consvar_t cv_tastelesstaunts = Player("tastelesstaunts", "Off").dont_save().values(CV_OnOff).flags(CV_NOSHOWHELP).description("Universally hated in dev");
+consvar_t cv_4thgear = UnsavedNetVar("4thgear", "Off").values(CV_OnOff).flags(CV_NOSHOWHELP).description("Surpassing your limits!");
+consvar_t cv_levelskull = UnsavedNetVar("levelskull", "Off").values(CV_OnOff).flags(CV_NOSHOWHELP).description("What Storm Rig looked like 2 months before 2.0");
 
 //
 // Dummy variables used solely in the menu system.
@@ -1355,8 +1356,6 @@ consvar_t cv_chatwidth = Player("chatwidth", "150").min_max(64, 150);
 
 // old shit console chat. (mostly exists for stuff like terminal, not because I cared if anyone liked the old chat.)
 consvar_t cv_consolechat = Player("chatmode", "Yes").values({{0, "Yes"}, {2, "No"}});
-
-consvar_t cv_gamestochat = Player("gamestochat", "0").min_max(0, 99);
 
 void Mute_OnChange(void);
 consvar_t cv_mute = UnsavedNetVar("mute", "Off").on_off().onchange(Mute_OnChange);
